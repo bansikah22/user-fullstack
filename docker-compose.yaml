@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--configFile=/etc/traefik/traefik.yml"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      #- "./traefik.yml:/etc/traefik/traefik.yml:rw"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    networks:
+      - web
+
+  frontend:
+    image: user-frontend:1.0
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3001"
+    networks:
+      - web
+
+  backend:
+    image: user-backend:1.0
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`backend.localhost`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=8082"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
