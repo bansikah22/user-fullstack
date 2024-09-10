@@ -1,0 +1,50 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  FRONTEND_DIR: user-frontendfrontend
+  BACKEND_DIR: user-backend
+
+# Job for building the React frontend
+build-frontend:
+  image: node:18
+  stage: build
+  script:
+    - cd  $FRONTEND_DIR
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      -  $FRONTEND_DIR/build
+    expire_in: 1 week
+
+# Job for building the Spring Boot backend
+build-backend:
+  image: maven:3.8.6-eclipse-temurin-17
+  stage: build
+  script:
+    - cd $BACKEND_DIR
+    - mvn clean install
+  artifacts:
+    paths:
+      - $BACKEND_DIR/target/*.jar
+    expire_in: 1 week
+
+# Job for running tests
+test:
+  image: maven:3.8.6-eclipse-temurin-17
+  stage: test
+  script:
+    - cd $BACKEND_DIR
+    - mvn test
+
+# Job for deploying the application
+deploy:
+  image: node:18
+  stage: deploy
+  script:
+    - echo "Deploying application..."
+  only:
+    - main
