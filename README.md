@@ -13,6 +13,7 @@ Follow the instructions below to set up and run the application locally.
 ### Prerequisites
 
 - [Git](https://git-scm.com/)
+- [Traefik](https://doc.traefik.io/)
 - [Node.js](https://nodejs.org/) (Version 18 or later)
 - [Java JDK](https://www.oracle.com/java/technologies/javase-downloads.html) (Version 17 or later)
 - [Maven](https://maven.apache.org/) (for building the Spring Boot backend)
@@ -84,6 +85,11 @@ Frontend: http://localhost:3001
 Backend: http://localhost:8082
 
 
+## Running with docker compose
+```bash
+docker-compose down -v
+docker-compose up -d
+```
 
 ## Contributing
 Contributions are welcome! Please create a pull request for any improvements or bug fixes.
