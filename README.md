@@ -1,6 +1,10 @@
 # User Fullstack Application
 
 This repository contains a full-stack application with a React frontend (`user-frontend`) and a Spring Boot backend (`user-backend`). The backend provides APIs that the frontend consumes to display data and perform operations.
+## Status
+![Build and Deploy Frontend](https://github.com/bansikah22/user-fullstack/actions/workflows/frontend.yml/badge.svg)
+![Build and Deploy Backend](https://github.com/bansikah22/user-fullstack/actions/workflows/backend.yml/badge.svg)
+
 
 ## Getting Started
 

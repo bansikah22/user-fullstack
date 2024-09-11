@@ -1,38 +1,30 @@
-version: '3.8'
+version: "3.8"
 
 services:
   traefik:
     image: traefik:v3.0
     command:
-      - "--configFile=/etc/traefik/traefik.yml"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"
-      - "8080:8080"
+      - "80:80"         # Expose HTTP
+      - "8080:8080"     # Expose Traefik dashboard
     volumes:
-      #- "./traefik.yml:/etc/traefik/traefik.yml:rw"
-      - "/var/run/docker.sock:/var/run/docker.sock:rw"
-    networks:
-      - web
+      - "/var/run/docker.sock:/var/run/docker.sock:ro" # Allow Traefik to listen to Docker events
 
-  frontend:
+  user-frontend:
     image: user-frontend:1.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3001"
-    networks:
-      - web
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    depends_on:
+      - user-backend
 
-  backend:
+  user-backend:
     image: user-backend:1.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`backend.localhost`)"
       - "traefik.http.services.backend.loadbalancer.server.port=8082"
-    networks:
-      - web
-
-networks:
-  web:
-    external: true
-
