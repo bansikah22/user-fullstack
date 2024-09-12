@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import UserForm from "./UserForm"; // Corrected import path
-import UserTable from "./UserTable"; // Corrected import path
+import UserForm from "./UserForm"; 
+import UserTable from "./UserTable"; 
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -10,18 +10,18 @@ const UserManagement = () => {
 
   const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8082/api";
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await axios.get(`${apiUrl}/users`);
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users: ", error);
     }
-  };
+  }, [apiUrl]); // Include apiUrl if it might change
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]); // Include fetchUsers in the dependency array
 
   const addUser = async (user) => {
     try {
