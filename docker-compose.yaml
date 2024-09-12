@@ -41,3 +41,15 @@ services:
       - "traefik.http.routers.backend.middlewares=backend-rewrite"
     networks:
       - user-net
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    command: >
+      --cleanup
+      --interval 60
+      --notification-slack-hook-url ${DISCORD_WEBHOOK_URL}
+      --no-pull 
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - user-net
