@@ -7,7 +7,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  
   GHRC_USERNAME: ${{ secrets.GHRC_USERNAME }}
   GHRC_TOKEN: ${{ secrets.GHRC_TOKEN }}
 
@@ -23,15 +22,21 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+      
       - name: Install Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - name: Install Dependencies
-        run: npm install --force
+        run: |
+          npm install --force
+          npm install @babel/plugin-proposal-private-property-in-object --save-dev
 
       - name: Build Project
         run: npm run build
+        env:
+          CI: true  # Ensures build fails on warnings
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
