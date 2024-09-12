@@ -19,8 +19,9 @@ services:
     networks:
       - user-net
     
+
   user-frontend:
-    image: user-frontend:1.1
+    image: user-frontend:1.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
@@ -31,13 +32,10 @@ services:
       - user-net
 
   user-backend:
-    image: user-backend:1.1
+    image: user-backend:1.0
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`backend.localhost`)"
       - "traefik.http.services.backend.loadbalancer.server.port=8082"
-      - "traefik.http.middlewares.backend-rewrite.replacepathregex.regex=^/api/(.*)"
-      - "traefik.http.middlewares.backend-rewrite.replacepathregex.replacement=/api/$$1"
-      - "traefik.http.routers.backend.middlewares=backend-rewrite"
     networks:
       - user-net

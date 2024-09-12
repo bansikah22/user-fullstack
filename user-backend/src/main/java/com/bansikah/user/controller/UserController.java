@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = {"http://localhost:3001", "http://frontend.localhost"})
 public class UserController {
 
     @Autowired

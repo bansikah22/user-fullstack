@@ -8,13 +8,15 @@ const UserManagement = () => {
   const [isEditing, setIsEditing] = useState(false); // State to handle editing
   const [currentUser, setCurrentUser] = useState({ id: "", name: "", email: "" }); // State to store current user for editing
 
+  const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8082/api";
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:8082/api/users");
+      const response = await axios.get(`${apiUrl}/users`);
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users: ", error);
@@ -23,7 +25,7 @@ const UserManagement = () => {
 
   const addUser = async (user) => {
     try {
-      await axios.post("http://localhost:8082/api/users/add", user);
+      await axios.post(`${apiUrl}/users/add`, user);
       fetchUsers();
     } catch (error) {
       console.error("Error adding user: ", error);
@@ -32,7 +34,7 @@ const UserManagement = () => {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:8082/api/users/${id}`);
+      await axios.delete(`${apiUrl}/users/${id}`);
       fetchUsers();
     } catch (error) {
       console.error("Error deleting user: ", error);
@@ -46,7 +48,7 @@ const UserManagement = () => {
 
   const updateUser = async (user) => {
     try {
-      await axios.put(`http://localhost:8082/api/users/${user.id}`, user);
+      await axios.put(`${apiUrl}/users/${user.id}`, user);
       setIsEditing(false); // Hide the update form after updating
       setCurrentUser({ id: "", name: "", email: "" }); // Reset current user
       fetchUsers();
