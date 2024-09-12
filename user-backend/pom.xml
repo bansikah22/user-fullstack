@@ -5,7 +5,7 @@
 
 	<groupId>com.bansikah</groupId>
 	<artifactId>user</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.0</version>
 	<name>user</name>
 	<description>User management system with Spring Boot and React</description>
 	<packaging>jar</packaging>
