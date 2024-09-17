@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-backend
+  template:
+    metadata:
+      labels:
+        app: user-backend
+    spec:
+      containers:
+        - name: user-backend
+          image: bansikah/user-backend:1.1
+          ports:
+            - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-backend-service
+spec:
+  selector:
+    app: user-backend
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP
