@@ -1,0 +1,27 @@
+# Start from an official Ubuntu image
+FROM ubuntu:22.04
+
+# Install necessary tools and dependencies
+RUN apt-get update -qq && \
+    apt-get install -y -qq \
+    curl \
+    gnupg \
+    software-properties-common \
+    maven \
+    nodejs \
+    npm \
+    docker.io \
+    docker-compose \
+    && apt-get clean
+
+# Install Snyk CLI
+RUN npm install -g snyk
+
+# Install Docker CLI (if you need the latest version)
+RUN curl -fsSL https://get.docker.com | sh
+
+# Configure Docker CLI (optional: set environment variables)
+ENV DOCKER_CLI_EXPERIMENTAL=enabled
+
+# Default command (can be overridden in your CI/CD configuration)
+CMD ["bash"]
