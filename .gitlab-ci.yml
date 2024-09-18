@@ -1,10 +1,11 @@
 stages:
   - build
   - test
+  - security-scan
   - deploy
 
 variables:
-  FRONTEND_DIR: user-frontendfrontend
+  FRONTEND_DIR: user-frontend
   BACKEND_DIR: user-backend
 
 # Job for building the React frontend
@@ -17,7 +18,7 @@ build-frontend:
     - npm run build
   artifacts:
     paths:
-      -  $FRONTEND_DIR/build
+      - $FRONTEND_DIR/build
     expire_in: 1 week
 
 # Job for building the Spring Boot backend
@@ -40,6 +41,43 @@ test:
     - cd $BACKEND_DIR
     - mvn test
 
+# Snyk scan for frontend dependencies (Node.js)
+snyk-scan-frontend:
+  image: snyk/snyk:docker
+  stage: security-scan
+  script:
+    - cd $FRONTEND_DIR
+    - npm install
+    - snyk auth $SNYK_TOKEN  
+    - snyk test --file=package.json
+  only:
+    - master
+
+# Snyk scan for backend dependencies (Java/Maven)
+snyk-scan-backend:
+  image: snyk/snyk:docker
+  stage: security-scan
+  script:
+    - cd $BACKEND_DIR
+    - mvn clean install
+    - snyk auth $SNYK_TOKEN
+    - snyk test --file=pom.xml --package-manager=maven
+  only:
+    - master
+
+# Snyk scan Docker images for vulnerabilities
+snyk-scan-docker:
+  image: docker:20.10.16
+  stage: security-scan
+  services:
+    - docker:dind
+  script:
+    - docker build -t my-app:$CI_COMMIT_SHA .
+    - snyk auth $SNYK_TOKEN
+    - snyk container test my-app:$CI_COMMIT_SHA
+  only:
+    - master
+
 # Job for deploying the application
 deploy:
   image: node:18
@@ -47,4 +85,4 @@ deploy:
   script:
     - echo "Deploying application..."
   only:
-    - main
+    - master
