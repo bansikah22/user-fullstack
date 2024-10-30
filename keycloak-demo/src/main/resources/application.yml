@@ -1,0 +1,23 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: keycloak-demo
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: food-ordering-client
+            client-secret: 
+            scope: openid,profile,email
+            redirect-uri: http://localhost:8082/login/oauth2/code/keycloak
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8088/realms/food-ordering-realm
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG

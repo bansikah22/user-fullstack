@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8088:8080"
+    command:
+      - start-dev
+
+  app:
+    build: .
+    ports:
+      - "8082:8082"
+    depends_on:
+      - keycloak
