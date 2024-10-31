@@ -1,0 +1,4 @@
+Flask
+flask-cors
+transformers  # For AI model
+torch         # If you're using a PyTorch-based model
