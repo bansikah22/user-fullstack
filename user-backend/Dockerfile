@@ -1,4 +1,4 @@
-FROM openjdk:24-ea-20-jdk-oraclelinux8
+FROM openjdk:24-ea-22-oraclelinux8
 
 WORKDIR /app
 
