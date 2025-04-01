@@ -23,7 +23,7 @@ services:
     image: user-frontend:1.1
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
+      - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)" # make sure to add this in your /etc/hosts file on your computer for it to work
       - "traefik.http.services.frontend.loadbalancer.server.port=80"
     depends_on:
       - user-backend
@@ -34,7 +34,7 @@ services:
     image: user-backend:1.1
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`backend.localhost`)"
+      - "traefik.http.routers.backend.rule=Host(`backend.localhost`)" # make sure to add this in your /etc/hosts file on your computer for it to work
       - "traefik.http.services.backend.loadbalancer.server.port=8082"
       - "traefik.http.middlewares.backend-rewrite.replacepathregex.regex=^/api/(.*)"
       - "traefik.http.middlewares.backend-rewrite.replacepathregex.replacement=/api/$$1"
