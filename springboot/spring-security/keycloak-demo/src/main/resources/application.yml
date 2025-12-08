@@ -10,7 +10,7 @@ spring:
         registration:
           keycloak:
             client-id: food-ordering-client
-            client-secret: 
+            client-secret: # put generated client secret here
             scope: openid,profile,email
             redirect-uri: http://localhost:8082/login/oauth2/code/keycloak
         provider:
